@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 /**
  * Created by xComputers on 31/03/2017.
@@ -25,12 +26,12 @@ import static android.view.View.GONE;
 
 public class BrowsingAdapter extends RecyclerView.Adapter<BrowsingAdapter.BrowsingViewHolder> {
 
-    private List<RemoteEntry> enries;
+    private List<RemoteEntry> entries;
     private Activity context;
     OnResultClickListener resultsItemClickListener;
 
     public BrowsingAdapter(List<RemoteEntry> enries, Activity context) {
-        this.enries = enries;
+        this.entries = enries;
         this.context = context;
     }
 
@@ -45,23 +46,25 @@ public class BrowsingAdapter extends RecyclerView.Adapter<BrowsingAdapter.Browsi
     @Override
     public void onBindViewHolder(BrowsingViewHolder holder, int position) {
 
-        RemoteEntry entry = enries.get(position);
+        RemoteEntry entry = entries.get(position);
         if (entry.isFile()) {
+            holder.dirCreationDate.setVisibility(VISIBLE);
+            holder.dirSize.setVisibility(VISIBLE);
+            holder.fileName.setVisibility(VISIBLE);
+            holder.dirName.setVisibility(GONE);
+
             holder.dirImage.setImageResource(R.drawable.ic_file);
             String size = FileSizeExtractionUtil.extract(entry.asFile().size());
-            holder.dirCreationDate.setVisibility(View.VISIBLE);
-            holder.dirSize.setVisibility(View.VISIBLE);
             holder.dirSize.setText(size);
             holder.dirCreationDate.setText(formatDate(entry.lastModified()));
-            holder.fileName.setVisibility(View.VISIBLE);
             holder.fileName.setText(entry.name());
-            holder.dirName.setVisibility(GONE);
+
         } else if (entry.isFolder()) {
             holder.dirCreationDate.setVisibility(GONE);
             holder.dirSize.setVisibility(GONE);
-            holder.dirName.setVisibility(View.VISIBLE);
-            holder.dirName.setText(entry.name());
             holder.fileName.setVisibility(GONE);
+            holder.dirName.setVisibility(VISIBLE);
+            holder.dirName.setText(entry.name());
             holder.dirImage.setImageResource(R.drawable.ic_folder);
         }
     }
@@ -75,25 +78,25 @@ public class BrowsingAdapter extends RecyclerView.Adapter<BrowsingAdapter.Browsi
     @Override
     public int getItemCount() {
 
-        return enries.size();
+        return entries.size();
     }
 
     public void setData(List<RemoteEntry> enries) {
-        this.enries = enries;
+        this.entries = enries;
         notifyDataSetChanged();
     }
 
     public List<RemoteEntry> getData() {
-        return this.enries;
+        return this.entries;
     }
 
     class BrowsingViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        ImageView dirImage;
-        TextView dirName;
-        TextView dirCreationDate;
-        TextView dirSize;
-        TextView fileName;
+        private ImageView dirImage;
+        private TextView dirName;
+        private TextView dirCreationDate;
+        private TextView dirSize;
+        private TextView fileName;
 
         BrowsingViewHolder(View itemView) {
             super(itemView);

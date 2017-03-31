@@ -16,18 +16,23 @@ public class FileSizeExtractionUtil {
     private static final String GIGABYTE = " GB";
     private static final String TERABYTE = " TB";
 
-    public static String extract(long size){
+    public static String extract(long size) {
         String fileSize = null;
-        if(size < KB){
+        double formattedSize;
+        if (size < KB) {
             fileSize = String.valueOf(size).concat(BYTE);
-        }else if(size >= KB && size < MB)
-            fileSize = String.valueOf(size/KB).concat(KILOBYTE);
-        else if(size >= MB && size < GB){
-            fileSize = String.valueOf(size/MB).concat(MEGABYTE);
-        } else if(size >= GB && size < TB){
-            fileSize = String.valueOf(size/GB).concat(GIGABYTE);
-        } else if( size >= TB){
-            fileSize = String.valueOf(size/TB).concat(TERABYTE);
+        } else if (size >= KB && size < MB) {
+            formattedSize = size / KB;
+            fileSize = String.valueOf(formattedSize).concat(KILOBYTE);
+        } else if (size >= MB && size < GB) {
+            formattedSize = size / MB;
+            fileSize = String.valueOf(formattedSize).concat(MEGABYTE);
+        } else if (size >= GB && size < TB) {
+            formattedSize = size / GB;
+            fileSize = String.valueOf(formattedSize).concat(GIGABYTE);
+        } else if (size >= TB) {
+            formattedSize = size / TB;
+            fileSize = String.valueOf(formattedSize).concat(TERABYTE);
         }
         return fileSize;
     }

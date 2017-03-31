@@ -20,6 +20,13 @@ public class DownloadUtil {
     public static void download(final RemoteFile fileToDownload, final File localFile, final Context context) {
 
         new AsyncTask<RemoteFile, Void, File>() {
+
+            @Override
+            protected void onPreExecute() {
+                ProgressUtil.showLoading(context);
+                super.onPreExecute();
+            }
+
             @Override
             protected File doInBackground(RemoteFile... remoteFiles) {
                 try {
@@ -36,9 +43,10 @@ public class DownloadUtil {
                 Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_VIEW);
                 intent.setDataAndType(Uri.fromFile(file), fileToDownload.contentType());
+                ProgressUtil.hideLoading();
                 context.startActivity(intent);
                 super.onPostExecute(file);
             }
-        };
+        }.execute();
     }
 }
