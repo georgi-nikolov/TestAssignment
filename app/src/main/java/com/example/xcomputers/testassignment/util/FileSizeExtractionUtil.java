@@ -4,16 +4,18 @@ package com.example.xcomputers.testassignment.util;
  * Created by xComputers on 31/03/2017.
  */
 
+import java.util.Locale;
+
 /**
  * Utility class for calculating the size of a given file
  * in the proper units
  */
 public class FileSizeExtractionUtil {
 
-    private static final long KB = 1024;
-    private static final long MB = 1048576;
-    private static final long GB = 1073741824;
-    private static final long TB = 1099511627776L;
+    private static final double KB = 1024;
+    private static final double MB = 1048576;
+    private static final double GB = 1073741824;
+    private static final double TB = 1099511627776D;
 
     private static final String BYTE = " B";
     private static final String KILOBYTE = " kB";
@@ -29,22 +31,24 @@ public class FileSizeExtractionUtil {
     public static String extract(long size) {
 
         String fileSize = null;
-        double formattedSize;
+        double formattedSize = 0;
+
         if (size < KB) {
-            fileSize = String.valueOf(size).concat(BYTE);
+            formattedSize = size;
+            fileSize = BYTE;
         } else if (size >= KB && size < MB) {
             formattedSize = size / KB;
-            fileSize = String.valueOf(formattedSize).concat(KILOBYTE);
+            fileSize = KILOBYTE;
         } else if (size >= MB && size < GB) {
             formattedSize = size / MB;
-            fileSize = String.valueOf(formattedSize).concat(MEGABYTE);
+            fileSize = MEGABYTE;
         } else if (size >= GB && size < TB) {
             formattedSize = size / GB;
-            fileSize = String.valueOf(formattedSize).concat(GIGABYTE);
+            fileSize = GIGABYTE;
         } else if (size >= TB) {
             formattedSize = size / TB;
-            fileSize = String.valueOf(formattedSize).concat(TERABYTE);
+            fileSize = TERABYTE;
         }
-        return fileSize;
+        return String.format(Locale.getDefault(),"%.1f",formattedSize).concat(fileSize);
     }
 }
