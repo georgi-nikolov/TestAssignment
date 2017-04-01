@@ -42,5 +42,10 @@ public interface IActivity {
      */
     void setToolbarTitle(String title);
 
+    /**
+     * Sets the ToolBar back button behaviour
+     *
+     * @param listener The listener to be fired upon back press
+     */
     void setToolbarBackAction(View.OnClickListener listener);
 }
