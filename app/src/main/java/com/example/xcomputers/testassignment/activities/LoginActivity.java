@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.xcomputers.testassignment.R;
+import com.example.xcomputers.testassignment.screens.BrowsingView;
 import com.example.xcomputers.testassignment.util.AlertDialogUtil;
 import com.pcloud.sdk.AuthorizationActivity;
 import com.pcloud.sdk.AuthorizationResult;
@@ -54,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(String accessToken) {
-        Intent loginIntent = new Intent(LoginActivity.this, BrowsingActivity.class);
+        Intent loginIntent = new Intent(LoginActivity.this, BaseActivity.class);
         loginIntent.putExtra(ACCESS_TOKEN, accessToken);
         startActivity(loginIntent);
         finish();
