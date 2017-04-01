@@ -1,6 +1,5 @@
 package com.example.xcomputers.testassignment.adapters;
 
-import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,20 +26,17 @@ import static android.view.View.VISIBLE;
 public class BrowsingAdapter extends RecyclerView.Adapter<BrowsingAdapter.BrowsingViewHolder> {
 
     private List<RemoteEntry> entries;
-    private Activity context;
-    OnResultClickListener resultsItemClickListener;
+    private OnResultClickListener resultsItemClickListener;
 
-    public BrowsingAdapter(List<RemoteEntry> enries, Activity context) {
-        this.entries = enries;
-        this.context = context;
+    public BrowsingAdapter(List<RemoteEntry> entries) {
+        this.entries = entries;
     }
 
     @Override
     public BrowsingViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        LayoutInflater inflater = context.getLayoutInflater();
+        LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View row = inflater.inflate(R.layout.file_view, parent, false);
-        BrowsingViewHolder vh = new BrowsingViewHolder(row);
-        return vh;
+        return new BrowsingViewHolder(row);
     }
 
     @Override
@@ -81,11 +77,22 @@ public class BrowsingAdapter extends RecyclerView.Adapter<BrowsingAdapter.Browsi
         return entries.size();
     }
 
-    public void setData(List<RemoteEntry> enries) {
-        this.entries = enries;
+    /**
+     * Changes the data this adapter works with
+     *
+     * @param entries List<RemoteEntry> to set as the new data
+     */
+    public void setData(List<RemoteEntry> entries) {
+
+        this.entries = entries;
         notifyDataSetChanged();
     }
 
+    /**
+     * Basic getter for the data currently in the adapter
+     *
+     * @return A List with the items the adapter is currently working with
+     */
     public List<RemoteEntry> getData() {
         return this.entries;
     }
@@ -116,10 +123,24 @@ public class BrowsingAdapter extends RecyclerView.Adapter<BrowsingAdapter.Browsi
 
     }
 
+    /**
+     * An interface to provide on click functionality for each element of the RecyclerView
+     */
     public interface OnResultClickListener {
+        /**
+         * A callback method to be fired upon a click on an item of the RecyclerView
+         *
+         * @param view     The view that was clicked
+         * @param position The position of the view in the adapter
+         */
         void onResultClicked(View view, int position);
     }
 
+    /**
+     * Call to provide implementation of the onClick method for the RecyclerView
+     *
+     * @param mItemClickListener A an implementation for the onClick logic
+     */
     public void setOnResultClickListener(final OnResultClickListener mItemClickListener) {
         this.resultsItemClickListener = mItemClickListener;
     }

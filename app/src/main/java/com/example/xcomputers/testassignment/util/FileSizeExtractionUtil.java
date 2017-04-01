@@ -4,7 +4,12 @@ package com.example.xcomputers.testassignment.util;
  * Created by xComputers on 31/03/2017.
  */
 
+/**
+ * Utility class for calculating the size of a given file
+ * in the proper units
+ */
 public class FileSizeExtractionUtil {
+
     private static final long KB = 1024;
     private static final long MB = 1048576;
     private static final long GB = 1073741824;
@@ -16,7 +21,13 @@ public class FileSizeExtractionUtil {
     private static final String GIGABYTE = " GB";
     private static final String TERABYTE = " TB";
 
+    /**
+     * Utility method that calculates the file size
+     * @param size the size of the file in bytes
+     * @return  User friendly string representation of the size along with the proper units
+     */
     public static String extract(long size) {
+
         String fileSize = null;
         double formattedSize;
         if (size < KB) {
