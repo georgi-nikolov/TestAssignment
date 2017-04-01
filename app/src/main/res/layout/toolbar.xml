@@ -3,22 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/actionBar"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="50dp"
     app:contentInsetEnd="0dp"
     app:contentInsetStart="0dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#00CCFF">
+        android:background="#1bcfd8">
 
         <ImageView
             android:id="@+id/logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:adjustViewBounds="true"
-            android:background="@drawable/pcloud_logo_circle" />
+            android:layout_centerVertical="true"
+            android:layout_marginStart="10dp"
+            app:srcCompat="@drawable/pcloud_logo_circle"
+            android:adjustViewBounds="true" />
 
         <TextView
             android:id="@+id/title"
@@ -36,10 +38,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
             android:layout_marginEnd="10dp"
-            android:adjustViewBounds="true"
+            android:scaleType="fitXY"
             android:background="@drawable/ic_arrow_up" />
-
 
     </RelativeLayout>
 

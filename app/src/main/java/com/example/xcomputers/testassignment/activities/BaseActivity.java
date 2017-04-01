@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,8 +71,6 @@ public class BaseActivity extends AppCompatActivity implements IActivity {
 
         titleTextView = (TextView) findViewById(R.id.title);
         titleTextView.setText(getString(R.string.root));
-        //TODO figure out why the logo image is now showing...
-        backButton.setImageResource(R.drawable.ic_arrow_up);
     }
 
     @Override
