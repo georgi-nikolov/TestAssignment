@@ -1,4 +1,4 @@
-package com.example.xcomputers.testassignment.screens;
+package com.example.xcomputers.testassignment.screens.browsing;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.example.xcomputers.testassignment.activities.IActivity;
 import com.example.xcomputers.testassignment.adapters.BrowsingAdapter;
 import com.example.xcomputers.testassignment.R;
+import com.example.xcomputers.testassignment.screens.BaseView;
+import com.example.xcomputers.testassignment.screens.InsideView;
 import com.pcloud.sdk.Call;
 import com.pcloud.sdk.Callback;
 import com.pcloud.sdk.RemoteEntry;

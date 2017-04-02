@@ -1,4 +1,4 @@
-package com.example.xcomputers.testassignment.screens;
+package com.example.xcomputers.testassignment.screens.browsing;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -59,7 +59,7 @@ public class BrowsingPresenter {
                 public void onClick(DialogInterface dialogInterface, int i) {
 
                     dialogInterface.dismiss();
-                    downloadFile(fileToDownload, localFile, context);
+                    downloadAndOpenFile(fileToDownload, localFile, context);
                 }
             }, new DialogInterface.OnClickListener() {
                 @Override
@@ -131,7 +131,7 @@ public class BrowsingPresenter {
                 public void onClick(DialogInterface dialogInterface, int i) {
 
                     dialogInterface.dismiss();
-                    callListFolder(folderId, callback);
+                    listFolder(folderId, callback);
                 }
             }, new DialogInterface.OnClickListener() {
                 @Override

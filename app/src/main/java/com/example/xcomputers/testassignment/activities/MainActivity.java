@@ -16,7 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xcomputers.testassignment.R;
-import com.example.xcomputers.testassignment.screens.BrowsingView;
+import com.example.xcomputers.testassignment.screens.browsing.BrowsingView;
 import com.example.xcomputers.testassignment.screens.InsideView;
 import com.pcloud.sdk.ApiClient;
 import com.pcloud.sdk.Authenticators;
