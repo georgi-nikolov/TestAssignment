@@ -7,7 +7,7 @@
     <string name="double_back_exit_message">Please click BACK again to exit</string>
     <string name="download_error_message">Unable to download file</string>
     <string name="internet_prompt_message">The app requires internet connection to work</string>
-    <string name="internet_dialog_positive_message">Connect to WIFI</string>
+    <string name="internet_dialog_positive_message">Try again</string>
     <string name="internet_dialog_negative_mesasge">Quit</string>
     <string name="file_open_error_message">Unable to open file!</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.example.xcomputers.testassignment.screens;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -51,6 +52,28 @@ public class BrowsingPresenter {
      */
     void downloadAndOpenFile(@NonNull final RemoteFile fileToDownload, @NonNull final File localFile, @NonNull final Context context) {
 
+        //TODO figure out how to avoid repeating this using only Java 7 functionality
+        if (!activity.hasInternetConnectivity()) {
+            activity.promptUserToConnect(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+
+                    dialogInterface.dismiss();
+                    downloadFile(fileToDownload, localFile, context);
+                }
+            }, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    System.exit(0);
+                }
+            });
+        } else {
+            downloadFile(fileToDownload, localFile, context);
+        }
+    }
+
+    private void downloadFile(@NonNull final RemoteFile fileToDownload, @NonNull final File localFile, @NonNull final Context context) {
+
         new AsyncTask<RemoteFile, Void, File>() {
 
             @Override
@@ -100,14 +123,31 @@ public class BrowsingPresenter {
      * @param folderId The folder to be called for
      * @param callback The callback to be fired with the response
      */
-    void listFolder(final long folderId, Callback callback) {
+    void listFolder(final long folderId, final Callback callback) {
 
-        activity.showLoading();
+        if (!activity.hasInternetConnectivity()) {
+            activity.promptUserToConnect(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
 
-        Call<RemoteFolder> call = client.listFolder(folderId);
-
-        call.enqueue(callback);
+                    dialogInterface.dismiss();
+                    callListFolder(folderId, callback);
+                }
+            }, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    System.exit(0);
+                }
+            });
+        } else {
+            callListFolder(folderId, callback);
+        }
     }
 
+    private void callListFolder(final long folderId, final Callback callback) {
 
+        activity.showLoading();
+        Call<RemoteFolder> call = client.listFolder(folderId);
+        call.enqueue(callback);
+    }
 }

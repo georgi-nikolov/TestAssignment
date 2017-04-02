@@ -1,21 +1,15 @@
 package com.example.xcomputers.testassignment.activities;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.provider.Settings;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.example.xcomputers.testassignment.R;
-import com.example.xcomputers.testassignment.screens.BrowsingView;
-import com.example.xcomputers.testassignment.util.AlertDialogUtil;
 import com.pcloud.sdk.AuthorizationActivity;
 import com.pcloud.sdk.AuthorizationResult;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends BaseActivity {
 
     private static final int PCLOUD_AUTHORIZATION_REQUEST_CODE = 123;
     private static final String CLIENT_ID = "VY5nA56YTC7";
@@ -30,10 +24,25 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        checkConnectivity();
+    }
+
+    private void checkConnectivity(){
+
         if (isConnectingToTheInternet()) {
             initiateLogin();
         } else {
-            promptInternetConnection();
+            promptInternetConnection(new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    checkConnectivity();
+                }
+            },new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    LoginActivity.this.finish();
+                }
+            });
         }
     }
 
@@ -55,7 +64,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void login(String accessToken) {
-        Intent loginIntent = new Intent(LoginActivity.this, BaseActivity.class);
+        Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
         loginIntent.putExtra(ACCESS_TOKEN, accessToken);
         startActivity(loginIntent);
         finish();
@@ -65,33 +74,6 @@ public class LoginActivity extends AppCompatActivity {
 
         Intent authIntent = AuthorizationActivity.createIntent(LoginActivity.this, CLIENT_ID);
         startActivityForResult(authIntent, PCLOUD_AUTHORIZATION_REQUEST_CODE);
-    }
-
-    private boolean isConnectingToTheInternet() {
-
-        ConnectivityManager connectivity = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        if (connectivity.getActiveNetworkInfo() != null) {
-            if (connectivity.getActiveNetworkInfo().isConnectedOrConnecting())
-                return true;
-        }
-        return false;
-    }
-
-    private void promptInternetConnection() {
-
-        AlertDialogUtil.showAlertDialog(this, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-                    }
-                }, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        LoginActivity.this.finish();
-                    }
-                }, R.string.internet_prompt_message,
-                R.string.internet_dialog_positive_message,
-                R.string.internet_dialog_negative_mesasge);
     }
 
     private void initiateLogin() {
