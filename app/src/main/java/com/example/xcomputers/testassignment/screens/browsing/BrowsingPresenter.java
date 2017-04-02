@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
 import android.widget.Toast;
@@ -88,15 +90,19 @@ public class BrowsingPresenter {
                     fileToDownload.download(DataSink.create(localFile));
                 } catch (IOException e) {
                     e.printStackTrace();
-                    Toast.makeText(context, R.string.download_error_message, Toast.LENGTH_SHORT).show();
+                    return null;
                 }
                 return localFile;
             }
 
             @Override
             protected void onPostExecute(File file) {
-
-                openFile(file, fileToDownload.contentType(), context);
+                if(file != null){
+                    openFile(file, fileToDownload.contentType(), context);
+                }else{
+                    Toast.makeText(context, R.string.download_error_message, Toast.LENGTH_SHORT).show();
+                    activity.hideLoading();
+                }
             }
         }.execute();
     }
