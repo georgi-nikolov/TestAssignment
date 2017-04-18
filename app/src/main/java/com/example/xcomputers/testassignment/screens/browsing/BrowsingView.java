@@ -77,10 +77,6 @@ public class BrowsingView extends BaseView<BrowsingPresenter> implements InsideV
         return new BrowsingAdapter.OnResultClickListener() {
             @Override
             public void onResultClicked(View view, int position) {
-                if(position == RecyclerView.NO_POSITION){
-                    Toast.makeText(getContext(), "Unable to process request", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 RemoteEntry entry = adapter.getData().get(position);
                 if (entry.isFolder()) {
                     presenter.listFolder(entry.asFolder().folderId(), callback);

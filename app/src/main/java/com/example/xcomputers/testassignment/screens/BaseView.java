@@ -12,7 +12,7 @@ import android.support.v4.app.Fragment;
  *
  * @param <P> The helper class to be assigned to the View
  */
-public abstract class BaseView<P extends Presenter> extends Fragment {
+public abstract class BaseView<P extends Presenter> extends Fragment implements ViewWithPresenter{
 
     private P presenter;
 
@@ -22,12 +22,13 @@ public abstract class BaseView<P extends Presenter> extends Fragment {
      * @return an instance of the presenter
      * @throws IllegalArgumentException if the given presenter is null or if it can't be instantiated
      */
+    @Override
     public P getPresenter() {
 
         if (isSafe() && presenter == null) {
             presenter = createPresenter();
             if (presenter == null) {
-                throw new IllegalStateException("The presenter cannot be null");
+                throw new IllegalStateException("The presenter creation failed");
             }
         }
         return presenter;

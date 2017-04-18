@@ -26,6 +26,9 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder impleme
 
     @Override
     public void onClick(View v) {
+        if(getAdapterPosition() == RecyclerView.NO_POSITION){
+            return;
+        }
         resultsItemClickListener.onResultClicked(v, getAdapterPosition());
     }
 

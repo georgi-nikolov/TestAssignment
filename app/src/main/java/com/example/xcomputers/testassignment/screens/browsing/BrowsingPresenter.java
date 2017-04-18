@@ -56,7 +56,6 @@ public class BrowsingPresenter implements Presenter {
      */
     void downloadAndOpenFile(@NonNull final RemoteFile fileToDownload, @NonNull final File localFile, @NonNull final Context context) {
 
-        //TODO figure out how to avoid repeating this using only Java 7 functionality
         if (!activity.hasInternetConnectivity()) {
             activity.promptUserToConnect(new AlertDialogUtil.OnClickListener() {
                 @Override

@@ -11,6 +11,7 @@ import com.example.xcomputers.testassignment.viewHolders.BrowsingFileViewHolder;
 import com.example.xcomputers.testassignment.viewHolders.BrowsingFolderViewHolder;
 import com.pcloud.sdk.RemoteEntry;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -80,7 +81,7 @@ public class BrowsingAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
      */
     public void setData(List<RemoteEntry> entries) {
         if(entries != null){
-            this.entries = entries;
+            this.entries = new ArrayList<>(entries);
             notifyDataSetChanged();
         }
     }
