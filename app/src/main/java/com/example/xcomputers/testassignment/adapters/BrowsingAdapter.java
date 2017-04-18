@@ -27,6 +27,7 @@ public class BrowsingAdapter extends RecyclerView.Adapter<BrowsingAdapter.Browsi
 
     private List<RemoteEntry> entries;
     private OnResultClickListener resultsItemClickListener;
+    
 
     public BrowsingAdapter(List<RemoteEntry> entries) {
         this.entries = entries;
