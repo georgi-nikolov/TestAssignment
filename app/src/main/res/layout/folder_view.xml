@@ -21,33 +21,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
+
         <TextView
-            android:id="@+id/file_name_TV"
+            android:id="@+id/directory_name_TV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="4dp"
-            android:layout_toEndOf="@+id/file_image_IV"
+            android:layout_marginTop="12dp"
+            android:layout_toEndOf="@id/file_image_IV"
             android:textColor="@android:color/black" />
-
-        <TextView
-            android:id="@+id/creation_date_TV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/file_name_TV"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_toEndOf="@+id/file_image_IV" />
-
-
-        <TextView
-            android:id="@+id/file_size_TV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignTop="@+id/creation_date_TV"
-            android:layout_marginEnd="10dp" />
-
 
     </RelativeLayout>
 </com.balysv.materialripple.MaterialRippleLayout>

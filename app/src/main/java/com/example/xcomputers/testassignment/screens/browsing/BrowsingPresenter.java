@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.example.xcomputers.testassignment.BuildConfig;
 import com.example.xcomputers.testassignment.R;
 import com.example.xcomputers.testassignment.activities.IActivity;
+import com.example.xcomputers.testassignment.screens.Presenter;
+import com.example.xcomputers.testassignment.util.AlertDialogUtil;
 import com.pcloud.sdk.ApiClient;
 import com.pcloud.sdk.Call;
 import com.pcloud.sdk.Callback;
@@ -34,7 +36,7 @@ import java.io.IOException;
  * Not the pure form of Presenter in MVP
  * but more intended to house the networking logic to avoid clutter in the View
  */
-public class BrowsingPresenter {
+public class BrowsingPresenter implements Presenter {
 
     private ApiClient client;
     private IActivity activity;
@@ -56,14 +58,14 @@ public class BrowsingPresenter {
 
         //TODO figure out how to avoid repeating this using only Java 7 functionality
         if (!activity.hasInternetConnectivity()) {
-            activity.promptUserToConnect(new DialogInterface.OnClickListener() {
+            activity.promptUserToConnect(new AlertDialogUtil.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
 
                     dialogInterface.dismiss();
                     downloadAndOpenFile(fileToDownload, localFile, context);
                 }
-            }, new DialogInterface.OnClickListener() {
+            }, new AlertDialogUtil.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     System.exit(0);
@@ -132,14 +134,14 @@ public class BrowsingPresenter {
     void listFolder(final long folderId, final Callback callback) {
 
         if (!activity.hasInternetConnectivity()) {
-            activity.promptUserToConnect(new DialogInterface.OnClickListener() {
+            activity.promptUserToConnect(new AlertDialogUtil.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
 
                     dialogInterface.dismiss();
                     listFolder(folderId, callback);
                 }
-            }, new DialogInterface.OnClickListener() {
+            }, new AlertDialogUtil.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     System.exit(0);

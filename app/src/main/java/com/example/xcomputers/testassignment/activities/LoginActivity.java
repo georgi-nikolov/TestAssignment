@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.xcomputers.testassignment.R;
+import com.example.xcomputers.testassignment.util.AlertDialogUtil;
 import com.pcloud.sdk.AuthorizationActivity;
 import com.pcloud.sdk.AuthorizationResult;
 
@@ -32,12 +33,12 @@ public class LoginActivity extends BaseActivity {
         if (isConnectingToTheInternet()) {
             initiateLogin();
         } else {
-            promptInternetConnection(new DialogInterface.OnClickListener() {
+            promptInternetConnection(new AlertDialogUtil.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     checkConnectivity();
                 }
-            },new DialogInterface.OnClickListener() {
+            },new AlertDialogUtil.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     LoginActivity.this.finish();

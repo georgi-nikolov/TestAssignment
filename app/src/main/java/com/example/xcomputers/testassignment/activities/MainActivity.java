@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageButton;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.example.xcomputers.testassignment.R;
 import com.example.xcomputers.testassignment.screens.browsing.BrowsingView;
 import com.example.xcomputers.testassignment.screens.InsideView;
+import com.example.xcomputers.testassignment.util.AlertDialogUtil;
 import com.pcloud.sdk.ApiClient;
 import com.pcloud.sdk.Authenticators;
 import com.pcloud.sdk.PCloudSdk;
@@ -97,7 +99,7 @@ public class MainActivity extends BaseActivity implements IActivity {
     }
 
     @Override
-    public void promptUserToConnect(DialogInterface.OnClickListener positiveClick, DialogInterface.OnClickListener negativeClick) {
+    public void promptUserToConnect(AlertDialogUtil.OnClickListener positiveClick, AlertDialogUtil.OnClickListener negativeClick) {
         promptInternetConnection(positiveClick, negativeClick);
     }
 

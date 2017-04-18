@@ -15,6 +15,7 @@ import com.example.xcomputers.testassignment.adapters.BrowsingAdapter;
 import com.example.xcomputers.testassignment.R;
 import com.example.xcomputers.testassignment.screens.BaseView;
 import com.example.xcomputers.testassignment.screens.InsideView;
+import com.example.xcomputers.testassignment.screens.Presenter;
 import com.pcloud.sdk.Call;
 import com.pcloud.sdk.Callback;
 import com.pcloud.sdk.RemoteEntry;
@@ -36,6 +37,7 @@ public class BrowsingView extends BaseView<BrowsingPresenter> implements InsideV
     private RemoteFolder currentFolder;
     private IActivity activity;
     private Callback callback;
+    private BrowsingPresenter presenter;
 
     @Nullable
     @Override
@@ -45,6 +47,7 @@ public class BrowsingView extends BaseView<BrowsingPresenter> implements InsideV
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        presenter = getPresenter();
         noItemsView = (TextView) view.findViewById(R.id.no_files_TV);
         initRecycler(view);
         activity.setToolbarBackAction(initToolBackBackButtonAction());
@@ -74,6 +77,10 @@ public class BrowsingView extends BaseView<BrowsingPresenter> implements InsideV
         return new BrowsingAdapter.OnResultClickListener() {
             @Override
             public void onResultClicked(View view, int position) {
+                if(position == RecyclerView.NO_POSITION){
+                    Toast.makeText(getContext(), "Unable to process request", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 RemoteEntry entry = adapter.getData().get(position);
                 if (entry.isFolder()) {
                     presenter.listFolder(entry.asFolder().folderId(), callback);

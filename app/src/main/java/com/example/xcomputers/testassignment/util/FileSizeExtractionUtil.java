@@ -12,16 +12,16 @@ import java.util.Locale;
  */
 public class FileSizeExtractionUtil {
 
-    private static final double KB = 1024;
-    private static final double MB = 1048576;
-    private static final double GB = 1073741824;
-    private static final double TB = 1099511627776D;
+    private static final double KB = 1024d;
+    private static final double MB = KB * 1024d;
+    private static final double GB = MB * 1024d;
+    private static final double TB = GB * 1024d;
 
-    private static final String BYTE = " B";
-    private static final String KILOBYTE = " kB";
-    private static final String MEGABYTE = " MB";
-    private static final String GIGABYTE = " GB";
-    private static final String TERABYTE = " TB";
+    private static final String BYTE = "B";
+    private static final String KILOBYTE = "kB";
+    private static final String MEGABYTE = "MB";
+    private static final String GIGABYTE = "GB";
+    private static final String TERABYTE = "TB";
 
     /**
      * Utility method that calculates the file size
@@ -49,6 +49,6 @@ public class FileSizeExtractionUtil {
             formattedSize = size / TB;
             fileSize = TERABYTE;
         }
-        return String.format(Locale.getDefault(),"%.1f",formattedSize).concat(fileSize);
+        return String.format(Locale.getDefault(),"%.1f %s",formattedSize, fileSize);
     }
 }

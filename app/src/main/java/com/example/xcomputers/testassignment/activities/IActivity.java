@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.support.v4.app.Fragment;
 import android.view.View;
 
+import com.example.xcomputers.testassignment.util.AlertDialogUtil;
 import com.pcloud.sdk.ApiClient;
 
 /**
@@ -57,7 +58,7 @@ public interface IActivity {
      * @param positiveClick The action to be taken when the positive button is clicked
      * @param negativeClick The action to be taken when the negative button is clicked
      */
-    void promptUserToConnect(DialogInterface.OnClickListener positiveClick, DialogInterface.OnClickListener negativeClick);
+    void promptUserToConnect(AlertDialogUtil.OnClickListener positiveClick, AlertDialogUtil.OnClickListener negativeClick);
 
     /**
      * Checks if the device is currently connected to the Internet via WIFI or a mobile network
