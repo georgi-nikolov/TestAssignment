@@ -10,4 +10,7 @@
     <string name="internet_dialog_positive_message">Try again</string>
     <string name="internet_dialog_negative_mesasge">Quit</string>
     <string name="file_open_error_message">Unable to open file!</string>
+    <string name="no_internet_error_message">This operation requires an internet connection</string>
+    <string name="connection_timeout_message">Connection timed out. Please try again</string>
+    <string name="file_not_found_message">File not found</string>
 </resources>

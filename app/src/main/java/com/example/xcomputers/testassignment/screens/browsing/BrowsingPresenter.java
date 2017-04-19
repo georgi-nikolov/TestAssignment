@@ -1,160 +1,97 @@
 package com.example.xcomputers.testassignment.screens.browsing;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
-import android.widget.Toast;
 
-import com.example.xcomputers.testassignment.BuildConfig;
-import com.example.xcomputers.testassignment.R;
-import com.example.xcomputers.testassignment.activities.IActivity;
-import com.example.xcomputers.testassignment.screens.Presenter;
-import com.example.xcomputers.testassignment.util.AlertDialogUtil;
-import com.pcloud.sdk.ApiClient;
-import com.pcloud.sdk.Call;
-import com.pcloud.sdk.Callback;
-import com.pcloud.sdk.DataSink;
+import com.example.xcomputers.testassignment.util.FileManager;
 import com.pcloud.sdk.RemoteFile;
-import com.pcloud.sdk.RemoteFolder;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
+import rx.schedulers.Schedulers;
+import rx.android.schedulers.AndroidSchedulers;
+
+import static com.example.xcomputers.testassignment.screens.browsing.BrowsingPresenter.Error.IO;
+import static com.example.xcomputers.testassignment.screens.browsing.BrowsingPresenter.Error.NO_INTERNET;
+import static com.example.xcomputers.testassignment.screens.browsing.BrowsingPresenter.Error.SOCKET_TIMEOUT;
 
 
 /**
  * Created by xComputers on 01/04/2017.
  */
 
-/**
- * Not the pure form of Presenter in MVP
- * but more intended to house the networking logic to avoid clutter in the View
- */
-public class BrowsingPresenter implements Presenter {
 
-    private ApiClient client;
-    private IActivity activity;
+public class BrowsingPresenter extends com.neykov.mvp.RxPresenter<FolderDisplayView> {
 
-    void setActivity(IActivity activity) {
+    private FileManager manager;
 
-        this.activity = activity;
-        this.client = activity.getClient();
+    public enum Error {NO_INTERNET, SOCKET_TIMEOUT, IO}
+
+    public void setManager(FileManager manager) {
+
+        this.manager = manager;
     }
 
-    /**
-     * Downloads a file and attempts to open it
-     *
-     * @param fileToDownload The RemoteFile the user selected
-     * @param localFile      The local file reference when donwloaded
-     * @param context        The app context for displaying error messages
-     */
-    void downloadAndOpenFile(@NonNull final RemoteFile fileToDownload, @NonNull final File localFile, @NonNull final Context context) {
-
-        if (!activity.hasInternetConnectivity()) {
-            activity.promptUserToConnect(new AlertDialogUtil.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-
-                    dialogInterface.dismiss();
-                    downloadAndOpenFile(fileToDownload, localFile, context);
-                }
-            }, new AlertDialogUtil.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    System.exit(0);
-                }
-            });
-        } else {
-            downloadFile(fileToDownload, localFile, context);
+    public void listFolder(final long folderId) {
+        //TODO return this logic when the SDK is fixed
+        //doWhenViewBound(folderDisplayView -> folderDisplayView.setLoadingState(true));
+        if(getView() != null){
+            getView().setLoadingState(true);
         }
+
+        this.add(manager.listFolder(folderId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(deliver())
+                .subscribe(delivery -> delivery.split(
+
+                        (browsingView, folder) -> {
+                            browsingView.displayFolder(folder);
+                            browsingView.setLoadingState(false);
+                        }, (browsingView, error) -> {
+                            browsingView.displayError(getErrorMessage(error));
+                            browsingView.setLoadingState(false);
+                        }
+                ))
+        );
     }
 
-    private void downloadFile(@NonNull final RemoteFile fileToDownload, @NonNull final File localFile, @NonNull final Context context) {
+    public void downloadFile(@NonNull final RemoteFile fileToDownload, @NonNull final File localFile) {
+        //TODO return this logic when the SDK is fixed
+        //doWhenViewBound(folderDisplayView -> folderDisplayView.setLoadingState(true));
 
-        new AsyncTask<RemoteFile, Void, File>() {
-
-            @Override
-            protected void onPreExecute() {
-                activity.showLoading();
-                super.onPreExecute();
-            }
-
-            @Override
-            protected File doInBackground(RemoteFile... remoteFiles) {
-                try {
-                    fileToDownload.download(DataSink.create(localFile));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-                return localFile;
-            }
-
-            @Override
-            protected void onPostExecute(File file) {
-                if(file != null){
-                    openFile(file, fileToDownload.contentType(), context);
-                }else{
-                    Toast.makeText(context, R.string.download_error_message, Toast.LENGTH_SHORT).show();
-                    activity.hideLoading();
-                }
-            }
-        }.execute();
-    }
-
-    private void openFile(File file, String contentType, Context context) {
-
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_VIEW);
-        Uri uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID, file);
-        intent.setDataAndType(uri, contentType);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        activity.hideLoading();
-        PackageManager pm = context.getPackageManager();
-        if (intent.resolveActivity(pm) != null) {
-            context.startActivity(intent);
-        } else {
-            Toast.makeText(context, R.string.file_open_error_message, Toast.LENGTH_SHORT).show();
+        if(getView() != null){
+            getView().setLoadingState(true);
         }
+
+        this.add(manager.downloadFile(fileToDownload, localFile)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .compose(deliver())
+                .subscribe(delivery -> delivery.split(
+                        (browsingView, file) -> {
+                            browsingView.openFile(file, fileToDownload.contentType());
+                            browsingView.setLoadingState(false);
+                        },
+                        (browsingView, error) -> {
+                            browsingView.displayError(getErrorMessage(error));
+                            browsingView.setLoadingState(false);
+                        }
+                )));
     }
 
-    /**
-     * Calls the API and fires a callback with the contents of a given folder
-     *
-     * @param folderId The folder to be called for
-     * @param callback The callback to be fired with the response
-     */
-    void listFolder(final long folderId, final Callback callback) {
+    private Error getErrorMessage(Throwable throwable) {
 
-        if (!activity.hasInternetConnectivity()) {
-            activity.promptUserToConnect(new AlertDialogUtil.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
+        Error error = null;
 
-                    dialogInterface.dismiss();
-                    listFolder(folderId, callback);
-                }
-            }, new AlertDialogUtil.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    System.exit(0);
-                }
-            });
-        } else {
-            callListFolder(folderId, callback);
+        if (throwable instanceof UnknownHostException) {
+            error = NO_INTERNET;
+        } else if (throwable instanceof SocketTimeoutException) {
+            error = SOCKET_TIMEOUT;
+        } else if (throwable instanceof IOException) {
+            error = IO;
         }
-    }
-
-    private void callListFolder(final long folderId, final Callback callback) {
-
-        activity.showLoading();
-        Call<RemoteFolder> call = client.listFolder(folderId);
-        call.enqueue(callback);
+        return error;
     }
 }

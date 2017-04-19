@@ -2,12 +2,10 @@ package com.example.xcomputers.testassignment.util;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v7.app.AlertDialog;
 
 
 /**
@@ -59,8 +57,8 @@ public class AlertDialogUtil extends DialogFragment{
         android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(getContext());
         builder.setMessage(args.getInt(MESSAGE_KEY))
                 .setCancelable(false)
-                .setPositiveButton(args.getInt(POSITIVE_BTN_TEXT_KEY), (DialogInterface.OnClickListener) args.getParcelable(POSITIVE_BTN_ACTION_KEY))
-                .setNegativeButton(args.getInt(NEGATIVE_BTN_TEXT_KEY), (DialogInterface.OnClickListener) args.getParcelable(NEGATIVE_BTN_ACTION_KEY));
+                .setPositiveButton(args.getInt(POSITIVE_BTN_TEXT_KEY), args.getParcelable(POSITIVE_BTN_ACTION_KEY))
+                .setNegativeButton(args.getInt(NEGATIVE_BTN_TEXT_KEY), args.getParcelable(NEGATIVE_BTN_ACTION_KEY));
         return builder.create();
     }
 

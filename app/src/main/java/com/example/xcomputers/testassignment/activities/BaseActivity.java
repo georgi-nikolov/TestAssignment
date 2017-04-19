@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.example.xcomputers.testassignment.R;
+import com.example.xcomputers.testassignment.screens.OnBackPressedDelegate;
 import com.example.xcomputers.testassignment.util.AlertDialogUtil;
 
 /**
@@ -14,6 +15,8 @@ import com.example.xcomputers.testassignment.util.AlertDialogUtil;
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
+
+    protected OnBackPressedDelegate onBackPressedDelegate;
 
     protected boolean isConnectingToTheInternet() {
 
@@ -30,7 +33,7 @@ public abstract class BaseActivity extends AppCompatActivity {
        AlertDialogUtil util =  AlertDialogUtil.newInstance(positiveClick, negativeClick, R.string.internet_prompt_message,
                 R.string.internet_dialog_positive_message,
                 R.string.internet_dialog_negative_mesasge);
-        util.show(getFragmentManager(), "some tag");
+        util.show(getFragmentManager(), AlertDialogUtil.class.getName());
         util.setCancelable(false);
     }
 }

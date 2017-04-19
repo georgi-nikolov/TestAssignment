@@ -4,9 +4,17 @@ android {
 
     defaultConfig {
         vectorDrawables.useSupportLibrary = true
+        jackOptions {
+            enabled true
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     compileSdkVersion 25
-    buildToolsVersion "25.0.0"
+    buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.example.xcomputers.testassignment"
         minSdkVersion 19
@@ -23,16 +31,29 @@ android {
     }
 }
 
+repositories {
+    maven { url "http://dl.bintray.com/georgi-neykov-hub/mvp-candy" }
+}
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.0.1'
+
+    compile 'com.android.support:appcompat-v7:25.0.2'
+    compile "com.neykov.mvp-candy:core:3.1.0"
+    compile "com.neykov.mvp-candy:rx:3.1.0"
+    compile "com.neykov.mvp-candy:fragments-support-v7:3.0.0"
     compile 'com.android.support.constraint:constraint-layout:1.0.0-alpha8'
     compile 'com.pcloud.sdk:android:1.0.1'
     compile 'com.pcloud.sdk:java-core:1.0.1'
-    compile 'com.android.support:recyclerview-v7:+'
+    compile 'com.android.support:recyclerview-v7:25.0.1'
     compile 'com.balysv:material-ripple:1.0.2'
+    compile 'io.reactivex:rxjava:1.2.5'
+    compile 'io.reactivex:rxandroid:1.0.1'
+    compile "com.google.dagger:dagger:2.9"
+    annotationProcessor "com.google.dagger:dagger-compiler:2.9"
+    provided 'javax.annotation:jsr250-api:1.0'
     testCompile 'junit:junit:4.12'
 }
+
