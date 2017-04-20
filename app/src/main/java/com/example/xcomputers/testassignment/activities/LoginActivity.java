@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import com.example.xcomputers.testassignment.MyApplication;
 import com.example.xcomputers.testassignment.R;
+import com.example.xcomputers.testassignment.util.TokenKeeper;
 import com.example.xcomputers.testassignment.util.AlertDialogUtil;
 import com.pcloud.sdk.AuthorizationActivity;
 import com.pcloud.sdk.AuthorizationResult;
+
+import javax.inject.Inject;
 
 public class LoginActivity extends BaseActivity {
 
@@ -16,10 +20,14 @@ public class LoginActivity extends BaseActivity {
     private static final String CLIENT_ID = "VY5nA56YTC7";
     public static final String ACCESS_TOKEN = "access_token";
 
+    @Inject
+    TokenKeeper keeper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        ((MyApplication)getApplicationContext()).component().inject(this);
     }
 
     @Override
@@ -66,7 +74,7 @@ public class LoginActivity extends BaseActivity {
 
     private void login(String accessToken) {
         Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
-        loginIntent.putExtra(ACCESS_TOKEN, accessToken);
+        keeper.setToken(accessToken);
         startActivity(loginIntent);
         finish();
     }

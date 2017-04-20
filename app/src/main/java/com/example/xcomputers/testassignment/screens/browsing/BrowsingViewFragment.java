@@ -21,11 +21,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xcomputers.testassignment.BuildConfig;
+import com.example.xcomputers.testassignment.MyApplication;
 import com.example.xcomputers.testassignment.activities.MainActivity;
 import com.example.xcomputers.testassignment.activities.NavigationHandler;
 import com.example.xcomputers.testassignment.adapters.BrowsingAdapter;
 import com.example.xcomputers.testassignment.R;
 import com.example.xcomputers.testassignment.screens.OnBackPressedListener;
+import com.example.xcomputers.testassignment.util.FileManager;
 import com.neykov.mvp.support.ViewFragment;
 import com.pcloud.sdk.RemoteEntry;
 import com.pcloud.sdk.RemoteFile;
@@ -34,6 +36,9 @@ import com.pcloud.sdk.RemoteFolder;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
+import javax.inject.Provider;
 
 import static android.view.View.GONE;
 
@@ -50,6 +55,16 @@ public class BrowsingViewFragment extends ViewFragment<BrowsingPresenter> implem
     private ImageButton backButton;
     private NavigationHandler navigator;
 
+    @Inject
+    Provider<BrowsingPresenter> provider;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        ((MyApplication)getActivity().getApplication()).component().inject(this);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -59,7 +74,6 @@ public class BrowsingViewFragment extends ViewFragment<BrowsingPresenter> implem
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         presenter = getPresenter();
-        presenter.setManager(((MainActivity) getActivity()).manager);
         noItemsView = (TextView) view.findViewById(R.id.no_files_TV);
         initRecycler(view);
         presenter.listFolder(RemoteFolder.ROOT_FOLDER_ID);
@@ -87,12 +101,12 @@ public class BrowsingViewFragment extends ViewFragment<BrowsingPresenter> implem
         backButton = (ImageButton) context.findViewById(R.id.back);
     }
 
-    public void setToolbarBackAction(View.OnClickListener listener) {
+    private void setToolbarBackAction(View.OnClickListener listener) {
 
         backButton.setOnClickListener(listener);
     }
 
-    public void setToolbarTitle(@NonNull String title) {
+    private void setToolbarTitle(@NonNull String title) {
 
         if (title.equals(File.separator)) {
             title = getString(R.string.root);
@@ -133,7 +147,7 @@ public class BrowsingViewFragment extends ViewFragment<BrowsingPresenter> implem
         };
     }
 
-    public void showLoading() {
+    private void showLoading() {
 
         if (loadingDialog == null) {
             loadingDialog = new ProgressDialog(getContext());
@@ -147,7 +161,7 @@ public class BrowsingViewFragment extends ViewFragment<BrowsingPresenter> implem
         }
     }
 
-    public void hideLoading() {
+    private void hideLoading() {
 
         if (loadingDialog != null) {
             loadingDialog.dismiss();
@@ -226,7 +240,6 @@ public class BrowsingViewFragment extends ViewFragment<BrowsingPresenter> implem
     @Override
     public BrowsingPresenter createPresenter() {
 
-        //TODO add manager
-        return new BrowsingPresenter();
+        return provider.get();
     }
 }

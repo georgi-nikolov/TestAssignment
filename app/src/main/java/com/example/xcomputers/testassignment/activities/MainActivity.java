@@ -2,7 +2,6 @@ package com.example.xcomputers.testassignment.activities;
 
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,8 +11,6 @@ import android.widget.Toast;
 import com.example.xcomputers.testassignment.R;
 import com.example.xcomputers.testassignment.screens.OnBackPressedDelegate;
 import com.example.xcomputers.testassignment.screens.browsing.BrowsingViewFragment;
-import com.example.xcomputers.testassignment.util.FileManager;
-
 
 
 /**
@@ -26,15 +23,11 @@ public class MainActivity extends BaseActivity implements NavigationHandler {
 
     private boolean doubleBackToExitPressedOnce;
 
-    public FileManager manager;
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_browsing);
 
-        String accessToken = getIntent().getStringExtra(LoginActivity.ACCESS_TOKEN);
-        manager = new FileManager(accessToken);
         openView(BrowsingViewFragment.class, true, null);
         onBackPressedDelegate = new OnBackPressedDelegate(getSupportFragmentManager(), R.id.container);
     }

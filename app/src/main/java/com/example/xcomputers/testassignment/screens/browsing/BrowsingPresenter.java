@@ -9,6 +9,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
+
+import javax.inject.Inject;
+
 import rx.schedulers.Schedulers;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -26,12 +29,13 @@ public class BrowsingPresenter extends com.neykov.mvp.RxPresenter<FolderDisplayV
 
     private FileManager manager;
 
-    public enum Error {NO_INTERNET, SOCKET_TIMEOUT, IO}
-
-    public void setManager(FileManager manager) {
+    public BrowsingPresenter(FileManager manager){
 
         this.manager = manager;
     }
+
+    public enum Error {NO_INTERNET, SOCKET_TIMEOUT, IO}
+
 
     public void listFolder(final long folderId) {
         //TODO return this logic when the SDK is fixed
