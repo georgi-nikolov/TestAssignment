@@ -12,6 +12,9 @@ import com.pcloud.sdk.RemoteEntry;
  * Created by Georgi on 4/18/2017.
  */
 
+/**
+ * The ViewHolder which takes care of the file type elements in the RecyclerView
+ */
 public class BrowsingFileViewHolder extends AbstractViewHolder {
 
     private ImageView dirImage;

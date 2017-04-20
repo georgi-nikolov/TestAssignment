@@ -12,6 +12,9 @@ import com.example.xcomputers.testassignment.util.AlertDialogUtil;
  * Created by xComputers on 02/04/2017.
  */
 
+/**
+ * An abstraction for an Activity to check the current internet connectivity and prompt the user to turn on WIFI or Mobile data
+ */
 public abstract class BaseActivity extends AppCompatActivity {
 
     protected OnBackPressedDelegate onBackPressedDelegate;

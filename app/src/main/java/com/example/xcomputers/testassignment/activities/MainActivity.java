@@ -17,6 +17,9 @@ import com.example.xcomputers.testassignment.screens.browsing.BrowsingViewFragme
  * Created by xComputers on 01/04/2017.
  */
 
+/**
+ * The main container activity for the screens
+ */
 public class MainActivity extends BaseActivity implements NavigationHandler {
 
     private static final int DEFAULT_DOUBLE_TAP_WAIT = 2000; //milliseconds

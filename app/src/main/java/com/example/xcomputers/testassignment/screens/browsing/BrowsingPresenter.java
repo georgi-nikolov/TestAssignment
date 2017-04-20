@@ -25,6 +25,9 @@ import static com.example.xcomputers.testassignment.screens.browsing.BrowsingPre
  * Created by xComputers on 01/04/2017.
  */
 
+/**
+ * A presenter for the FolderBrowsingView which connects the view to the FileManager
+ */
 public class BrowsingPresenter extends com.neykov.mvp.RxPresenter<FolderDisplayView> {
 
     private FileManager manager;
@@ -37,6 +40,9 @@ public class BrowsingPresenter extends com.neykov.mvp.RxPresenter<FolderDisplayV
         this.manager = manager;
     }
 
+    /**
+     * Used to represent different errors which may occur during network or file operations
+     */
     enum Error {
 
         /**

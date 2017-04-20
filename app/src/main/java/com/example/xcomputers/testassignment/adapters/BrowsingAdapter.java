@@ -19,6 +19,9 @@ import java.util.List;
  * Created by xComputers on 31/03/2017.
  */
 
+/**
+ * An adapter for the RecyclerView which displays the contents of a folder
+ */
 public class BrowsingAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
 
     private static final int TYPE_FILE = 0;

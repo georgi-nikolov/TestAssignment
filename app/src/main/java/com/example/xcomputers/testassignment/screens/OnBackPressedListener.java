@@ -7,9 +7,9 @@ package com.example.xcomputers.testassignment.screens;
 public interface OnBackPressedListener {
 
     /**
-     * Delegates the backPressed event to the insideView
+     * Delegates the backPressed event to the Fragment inside the Activity
      *
-     * @return true if the insideView has consumed the event, false if the container should handle it
+     * @return true if the Fragment has consumed the event, false if the container Activity should handle it
      */
     boolean onBackPressed();
 }

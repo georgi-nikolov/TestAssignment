@@ -62,7 +62,7 @@ public class AlertDialogUtil extends DialogFragment {
     }
 
     /**
-     * A parcelable implementation of an DialogInterface.OnClickListener to be used in a Bundle
+     * A parcelable implementation of a DialogInterface.OnClickListener to be used in a Bundle
      */
     public abstract static class OnClickListener implements DialogInterface.OnClickListener, Parcelable {
 

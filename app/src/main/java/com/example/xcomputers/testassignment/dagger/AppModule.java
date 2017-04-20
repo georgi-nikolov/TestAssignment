@@ -20,6 +20,10 @@ import dagger.Provides;
 /**
  * Created by Georgi on 4/20/2017.
  */
+
+/**
+ * The dagger module to provide the ApiClient, TokenKeeper and the ApplicationContext
+ */
 @Module
 public class AppModule {
 

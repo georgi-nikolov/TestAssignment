@@ -8,7 +8,10 @@ import java.io.File;
  * Created by Georgi on 4/19/2017.
  */
 
-public interface FolderDisplayView {
+/**
+ * A contract for a view which can display the contents of a folder and open a file
+ */
+interface FolderDisplayView {
 
     /**
      * Gives the view a folder to display on the screen

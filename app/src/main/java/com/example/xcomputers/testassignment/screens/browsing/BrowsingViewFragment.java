@@ -38,7 +38,9 @@ import javax.inject.Provider;
 
 import static android.view.View.GONE;
 
-
+/**
+ * A fragment representing the View for browsing folder contents
+ */
 public class BrowsingViewFragment extends ViewFragment<BrowsingPresenter> implements OnBackPressedListener, FolderDisplayView {
 
     private RecyclerView recyclerView;

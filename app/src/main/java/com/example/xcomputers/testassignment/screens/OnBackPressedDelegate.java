@@ -8,6 +8,9 @@ import android.support.v4.app.FragmentManager;
  * Created by Georgi on 4/19/2017.
  */
 
+/**
+ * Delegates the backpressed event to the fragment
+ */
 public class OnBackPressedDelegate {
 
     private int contentId;
@@ -19,6 +22,10 @@ public class OnBackPressedDelegate {
         this.manager = manager;
     }
 
+    /**
+     * Delegates the onBackPressed event from the Activity to the fragment inside
+     * @return true if the fragment has consumed the event, false otherwise
+     */
     public boolean onBackPressed() {
 
         Fragment fragment = manager.findFragmentById(contentId);

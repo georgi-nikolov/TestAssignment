@@ -14,7 +14,10 @@ import java.util.Locale;
  * Created by Georgi on 4/18/2017.
  */
 
-public abstract class AbstractViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+/**
+ * An abstraction of a RecyclerView.ViewHolder to house the logic for the OnClickListener and the Date formatting
+ */
+public abstract class AbstractViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     private BrowsingAdapter.OnResultClickListener resultsItemClickListener;
 
@@ -26,7 +29,7 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder impleme
 
     @Override
     public void onClick(View v) {
-        if(getAdapterPosition() == RecyclerView.NO_POSITION){
+        if (getAdapterPosition() == RecyclerView.NO_POSITION) {
             return;
         }
         resultsItemClickListener.onResultClicked(v, getAdapterPosition());
@@ -38,7 +41,7 @@ public abstract class AbstractViewHolder extends RecyclerView.ViewHolder impleme
         return formatter.format(date);
     }
 
-    public void setOnClickListener(BrowsingAdapter.OnResultClickListener listener){
+    public void setOnClickListener(BrowsingAdapter.OnResultClickListener listener) {
 
         this.resultsItemClickListener = listener;
     }
