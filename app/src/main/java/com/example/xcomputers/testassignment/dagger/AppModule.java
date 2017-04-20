@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.example.xcomputers.testassignment.MyApplication;
+import com.example.xcomputers.testassignment.BrowsingApplication;
 import com.example.xcomputers.testassignment.util.TokenKeeper;
 import com.pcloud.sdk.ApiClient;
 import com.pcloud.sdk.Authenticators;
@@ -23,29 +23,29 @@ import dagger.Provides;
 @Module
 public class AppModule {
 
-    private static final long DEFAULT_TIMEOUT_IN_MILIS = 15000;
+    private static final long DEFAULT_TIMEOUT_IN_MILLIS = 15000;
 
-    private final MyApplication application;
+    private final BrowsingApplication application;
 
-    public AppModule(MyApplication application) {
+    public AppModule(BrowsingApplication application) {
         this.application = application;
     }
 
     @Provides
     @Singleton
-    ApiClient provideApiClient(TokenKeeper keeper){
+    ApiClient provideApiClient(TokenKeeper keeper) {
 
         return PCloudSdk.newClientBuilder()
                 .authenticator(Authenticators.newOauthAuthenticator(keeper::getToken))
-                .connectTimeout(DEFAULT_TIMEOUT_IN_MILIS, TimeUnit.MILLISECONDS)
-                .readTimeout(DEFAULT_TIMEOUT_IN_MILIS, TimeUnit.MILLISECONDS)
+                .connectTimeout(DEFAULT_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
+                .readTimeout(DEFAULT_TIMEOUT_IN_MILLIS, TimeUnit.MILLISECONDS)
                 .callbackExecutor(new Handler(Looper.getMainLooper())::post)
                 .create();
     }
 
     @Provides
     @Singleton
-    TokenKeeper provideKeeper(){
+    TokenKeeper provideKeeper() {
 
         return new TokenKeeper();
     }

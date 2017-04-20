@@ -12,6 +12,7 @@ import com.example.xcomputers.testassignment.viewHolders.BrowsingFolderViewHolde
 import com.pcloud.sdk.RemoteEntry;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -20,17 +21,25 @@ import java.util.List;
 
 public class BrowsingAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
 
-    private List<RemoteEntry> entries;
-    private OnResultClickListener resultsItemClickListener;
     private static final int TYPE_FILE = 0;
     private static final int TYPE_FOLDER = 1;
 
+    private List<RemoteEntry> entries;
+    private OnResultClickListener resultsItemClickListener;
+
+    public BrowsingAdapter() {
+
+        this(Collections.emptyList());
+    }
+
     public BrowsingAdapter(List<RemoteEntry> entries) {
+
         this.entries = entries;
     }
 
     @Override
     public AbstractViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         AbstractViewHolder holder = null;
         LayoutInflater inflater;
         View row;
@@ -46,7 +55,10 @@ public class BrowsingAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
                 holder = new BrowsingFolderViewHolder(row);
                 break;
         }
-        holder.setOnClickListener(resultsItemClickListener);
+        if (holder != null) {
+            holder.setOnClickListener(resultsItemClickListener);
+        }
+
         return holder;
     }
 
@@ -59,6 +71,7 @@ public class BrowsingAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
+
         int type = -1;
         if (entries.get(position).isFile()) {
             type = TYPE_FILE;
@@ -80,7 +93,8 @@ public class BrowsingAdapter extends RecyclerView.Adapter<AbstractViewHolder> {
      * @param entries List<RemoteEntry> to set as the new data
      */
     public void setData(List<RemoteEntry> entries) {
-        if(entries != null){
+
+        if (entries != null) {
             this.entries = new ArrayList<>(entries);
             notifyDataSetChanged();
         }

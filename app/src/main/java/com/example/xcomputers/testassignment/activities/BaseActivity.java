@@ -1,10 +1,8 @@
 package com.example.xcomputers.testassignment.activities;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.net.ConnectivityManager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 import com.example.xcomputers.testassignment.R;
 import com.example.xcomputers.testassignment.screens.OnBackPressedDelegate;
@@ -30,10 +28,10 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     protected void promptInternetConnection(AlertDialogUtil.OnClickListener positiveClick, AlertDialogUtil.OnClickListener negativeClick) {
 
-       AlertDialogUtil util =  AlertDialogUtil.newInstance(positiveClick, negativeClick, R.string.internet_prompt_message,
+        AlertDialogUtil util = AlertDialogUtil.newInstance(positiveClick, negativeClick, R.string.internet_prompt_message,
                 R.string.internet_dialog_positive_message,
                 R.string.internet_dialog_negative_mesasge);
-        util.show(getFragmentManager(), AlertDialogUtil.class.getName());
+        util.show(getSupportFragmentManager(), AlertDialogUtil.class.getName());
         util.setCancelable(false);
     }
 }

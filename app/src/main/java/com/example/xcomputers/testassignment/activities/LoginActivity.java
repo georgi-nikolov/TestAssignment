@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import com.example.xcomputers.testassignment.MyApplication;
+import com.example.xcomputers.testassignment.BrowsingApplication;
 import com.example.xcomputers.testassignment.R;
 import com.example.xcomputers.testassignment.util.TokenKeeper;
 import com.example.xcomputers.testassignment.util.AlertDialogUtil;
@@ -25,18 +25,20 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ((MyApplication)getApplicationContext()).component().inject(this);
+        ((BrowsingApplication) getApplicationContext()).component().inject(this);
     }
 
     @Override
     protected void onResume() {
+
         super.onResume();
         checkConnectivity();
     }
 
-    private void checkConnectivity(){
+    private void checkConnectivity() {
 
         if (isConnectingToTheInternet()) {
             initiateLogin();
@@ -46,7 +48,7 @@ public class LoginActivity extends BaseActivity {
                 public void onClick(DialogInterface dialogInterface, int i) {
                     checkConnectivity();
                 }
-            },new AlertDialogUtil.OnClickListener() {
+            }, new AlertDialogUtil.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
                     LoginActivity.this.finish();
@@ -57,6 +59,7 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PCLOUD_AUTHORIZATION_REQUEST_CODE) {
             AuthorizationResult result = (AuthorizationResult) data.getSerializableExtra(AuthorizationActivity.KEY_AUTHORIZATION_RESULT);
@@ -73,6 +76,7 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void login(String accessToken) {
+
         Intent loginIntent = new Intent(LoginActivity.this, MainActivity.class);
         keeper.setToken(accessToken);
         startActivity(loginIntent);

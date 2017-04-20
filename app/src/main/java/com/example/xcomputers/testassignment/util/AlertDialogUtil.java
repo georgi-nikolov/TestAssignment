@@ -1,11 +1,11 @@
 package com.example.xcomputers.testassignment.util;
 
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.app.DialogFragment;
 
 
 /**
@@ -15,7 +15,7 @@ import android.os.Parcelable;
 /**
  * Utility class for providing an alert dialog
  */
-public class AlertDialogUtil extends DialogFragment{
+public class AlertDialogUtil extends DialogFragment {
 
     private static final String MESSAGE_KEY = "message";
     private static final String POSITIVE_BTN_TEXT_KEY = "positiveBtnText";
@@ -31,7 +31,6 @@ public class AlertDialogUtil extends DialogFragment{
      * @param message         the message to be set to the dialog
      * @param positiveBtnText the text for the positive button
      * @param negativeBtnText the text for the negative button
-     *
      * @return An instance of a DialogFragment
      */
     public static AlertDialogUtil newInstance(OnClickListener positiveClick,
@@ -72,7 +71,8 @@ public class AlertDialogUtil extends DialogFragment{
         public abstract void onClick(DialogInterface dialog, int which);
 
         @Override
-        public void writeToParcel(Parcel dest, int flags) {}
+        public void writeToParcel(Parcel dest, int flags) {
+        }
 
         @Override
         public int describeContents() {

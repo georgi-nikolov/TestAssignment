@@ -12,8 +12,9 @@ import java.net.UnknownHostException;
 
 import javax.inject.Inject;
 
-import rx.schedulers.Schedulers;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 import static com.example.xcomputers.testassignment.screens.browsing.BrowsingPresenter.Error.IO;
 import static com.example.xcomputers.testassignment.screens.browsing.BrowsingPresenter.Error.NO_INTERNET;
@@ -24,30 +25,50 @@ import static com.example.xcomputers.testassignment.screens.browsing.BrowsingPre
  * Created by xComputers on 01/04/2017.
  */
 
-
 public class BrowsingPresenter extends com.neykov.mvp.RxPresenter<FolderDisplayView> {
 
     private FileManager manager;
+    private Subscription listFolderSubscription;
+    private Subscription downloadFileSubscription;
 
-    public BrowsingPresenter(FileManager manager){
+    @Inject
+    BrowsingPresenter(FileManager manager) {
 
         this.manager = manager;
     }
 
-    public enum Error {NO_INTERNET, SOCKET_TIMEOUT, IO}
+    enum Error {
 
+        /**
+         * The device is not connected ot the internet
+         */
+        NO_INTERNET,
 
-    public void listFolder(final long folderId) {
-        //TODO return this logic when the SDK is fixed
-        //doWhenViewBound(folderDisplayView -> folderDisplayView.setLoadingState(true));
-        if(getView() != null){
-            getView().setLoadingState(true);
+        /**
+         * The connection timed out
+         */
+        SOCKET_TIMEOUT,
+
+        /**
+         * Any kind of IO exception
+         */
+        IO
+    }
+
+    void listFolder(final long folderId) {
+
+        if (listFolderSubscription != null &&
+                !listFolderSubscription.isUnsubscribed()) {
+            return;
         }
 
-        this.add(manager.listFolder(folderId)
+        doWhenViewBound(folderDisplayView -> folderDisplayView.setLoadingState(true));
+
+        listFolderSubscription = manager.listFolder(folderId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(deliver())
+                .doOnTerminate(() -> listFolderSubscription = null)
                 .subscribe(delivery -> delivery.split(
 
                         (browsingView, folder) -> {
@@ -57,22 +78,25 @@ public class BrowsingPresenter extends com.neykov.mvp.RxPresenter<FolderDisplayV
                             browsingView.displayError(getErrorMessage(error));
                             browsingView.setLoadingState(false);
                         }
-                ))
-        );
+                ));
+
+        this.add(listFolderSubscription);
     }
 
-    public void downloadFile(@NonNull final RemoteFile fileToDownload, @NonNull final File localFile) {
-        //TODO return this logic when the SDK is fixed
-        //doWhenViewBound(folderDisplayView -> folderDisplayView.setLoadingState(true));
+    void downloadFile(@NonNull final RemoteFile fileToDownload, @NonNull final File localFile) {
 
-        if(getView() != null){
-            getView().setLoadingState(true);
+        if (downloadFileSubscription != null &&
+                !downloadFileSubscription.isUnsubscribed()){
+            return;
         }
 
-        this.add(manager.downloadFile(fileToDownload, localFile)
+        doWhenViewBound(folderDisplayView -> folderDisplayView.setLoadingState(true));
+
+        downloadFileSubscription = manager.downloadFile(fileToDownload, localFile)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .compose(deliver())
+                .doOnTerminate(() -> downloadFileSubscription = null)
                 .subscribe(delivery -> delivery.split(
                         (browsingView, file) -> {
                             browsingView.openFile(file, fileToDownload.contentType());
@@ -82,7 +106,9 @@ public class BrowsingPresenter extends com.neykov.mvp.RxPresenter<FolderDisplayV
                             browsingView.displayError(getErrorMessage(error));
                             browsingView.setLoadingState(false);
                         }
-                )));
+                ));
+
+        this.add(downloadFileSubscription);
     }
 
     private Error getErrorMessage(Throwable throwable) {

@@ -9,7 +9,7 @@ import com.example.xcomputers.testassignment.dagger.*;
  * Created by Georgi on 4/20/2017.
  */
 
-public class MyApplication extends Application {
+public class BrowsingApplication extends Application {
 
     private AppComponent component;
 
@@ -17,7 +17,6 @@ public class MyApplication extends Application {
         super.onCreate();
         component = DaggerAppComponent.builder()
                 .appModule(new AppModule(this))
-                .browsingModule(new BrowsingModule())
                 .build();
     }
 

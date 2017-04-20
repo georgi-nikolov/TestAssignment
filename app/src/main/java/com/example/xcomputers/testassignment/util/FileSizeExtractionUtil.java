@@ -25,8 +25,9 @@ public class FileSizeExtractionUtil {
 
     /**
      * Utility method that calculates the file size
+     *
      * @param size the size of the file in bytes
-     * @return  User friendly string representation of the size along with the proper units
+     * @return User friendly string representation of the size along with the proper units
      */
     public static String extract(long size) {
 
@@ -49,6 +50,6 @@ public class FileSizeExtractionUtil {
             formattedSize = size / TB;
             fileSize = TERABYTE;
         }
-        return String.format(Locale.getDefault(),"%.1f %s",formattedSize, fileSize);
+        return String.format(Locale.getDefault(), "%.1f %s", formattedSize, fileSize);
     }
 }

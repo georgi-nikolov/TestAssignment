@@ -9,32 +9,28 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xcomputers.testassignment.BuildConfig;
-import com.example.xcomputers.testassignment.MyApplication;
-import com.example.xcomputers.testassignment.activities.MainActivity;
+import com.example.xcomputers.testassignment.BrowsingApplication;
 import com.example.xcomputers.testassignment.activities.NavigationHandler;
 import com.example.xcomputers.testassignment.adapters.BrowsingAdapter;
 import com.example.xcomputers.testassignment.R;
 import com.example.xcomputers.testassignment.screens.OnBackPressedListener;
-import com.example.xcomputers.testassignment.util.FileManager;
 import com.neykov.mvp.support.ViewFragment;
 import com.pcloud.sdk.RemoteEntry;
 import com.pcloud.sdk.RemoteFile;
 import com.pcloud.sdk.RemoteFolder;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -51,8 +47,7 @@ public class BrowsingViewFragment extends ViewFragment<BrowsingPresenter> implem
     private RemoteFolder currentFolder;
     private BrowsingPresenter presenter;
     private ProgressDialog loadingDialog;
-    private TextView titleTextView;
-    private ImageButton backButton;
+    private Toolbar toolbar;
     private NavigationHandler navigator;
 
     @Inject
@@ -60,9 +55,18 @@ public class BrowsingViewFragment extends ViewFragment<BrowsingPresenter> implem
 
 
     @Override
+    public void onAttach(Context context) {
+
+        super.onAttach(context);
+        if (context instanceof NavigationHandler) {
+            this.navigator = (NavigationHandler) context;
+        }
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((MyApplication)getActivity().getApplication()).component().inject(this);
+        ((BrowsingApplication) getActivity().getApplication()).component().inject(this);
     }
 
     @Nullable
@@ -73,37 +77,36 @@ public class BrowsingViewFragment extends ViewFragment<BrowsingPresenter> implem
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
         presenter = getPresenter();
         noItemsView = (TextView) view.findViewById(R.id.no_files_TV);
         initRecycler(view);
+        initToolbar(view);
         presenter.listFolder(RemoteFolder.ROOT_FOLDER_ID);
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof AppCompatActivity) {
-            initActionBar((AppCompatActivity) context);
-            setToolbarBackAction(initToolBackBackButtonAction());
-        }
-        if (context instanceof NavigationHandler) {
-            this.navigator = (NavigationHandler) context;
-        }
+    public void onDestroyView() {
+
+        super.onDestroyView();
+        recyclerView = null;
+        noItemsView = null;
+        adapter = null;
+        currentFolder = null;
+        presenter = null;
+        loadingDialog = null;
+        toolbar = null;
+        navigator = null;
     }
 
-    private void initActionBar(AppCompatActivity context) {
 
-        Toolbar actionBar = (Toolbar) context.findViewById(R.id.actionBar);
-        context.setSupportActionBar(actionBar);
+    private void initToolbar(View view) {
 
-        titleTextView = (TextView) context.findViewById(R.id.title);
-        titleTextView.setText(getString(R.string.root));
-        backButton = (ImageButton) context.findViewById(R.id.back);
-    }
-
-    private void setToolbarBackAction(View.OnClickListener listener) {
-
-        backButton.setOnClickListener(listener);
+        toolbar = (Toolbar) view.findViewById(R.id.toolbar);
+        toolbar.setTitle(R.string.root);
+        toolbar.inflateMenu(R.menu.toolbar_menu);
+        Menu menu = toolbar.getMenu();
+        menu.findItem(R.id.back).setOnMenuItemClickListener(item -> onBack());
     }
 
     private void setToolbarTitle(@NonNull String title) {
@@ -111,14 +114,13 @@ public class BrowsingViewFragment extends ViewFragment<BrowsingPresenter> implem
         if (title.equals(File.separator)) {
             title = getString(R.string.root);
         }
-        titleTextView.setText(title);
+        toolbar.setTitle(title);
     }
 
     private void initRecycler(View view) {
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recycler);
-        List<RemoteEntry> entryList = new ArrayList<>();
-        adapter = new BrowsingAdapter(entryList);
+        adapter = new BrowsingAdapter();
         adapter.setOnResultClickListener(createAdapterListener());
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -134,15 +136,6 @@ public class BrowsingViewFragment extends ViewFragment<BrowsingPresenter> implem
                 RemoteFile remoteFile = entry.asFile();
                 File localFolder = getContext().getFilesDir();
                 presenter.downloadFile(remoteFile, new File(localFolder, remoteFile.name()));
-            }
-        };
-    }
-
-    private View.OnClickListener initToolBackBackButtonAction() {
-
-        return view -> {
-            if (currentFolder != null && currentFolder.folderId() != RemoteFolder.ROOT_FOLDER_ID) {
-                presenter.listFolder(currentFolder.parentFolderId());
             }
         };
     }
@@ -170,6 +163,11 @@ public class BrowsingViewFragment extends ViewFragment<BrowsingPresenter> implem
 
     @Override
     public boolean onBackPressed() {
+        return onBack();
+    }
+
+    private boolean onBack() {
+
         if (currentFolder != null && currentFolder.folderId() != RemoteFolder.ROOT_FOLDER_ID) {
             presenter.listFolder(currentFolder.parentFolderId());
             return true;

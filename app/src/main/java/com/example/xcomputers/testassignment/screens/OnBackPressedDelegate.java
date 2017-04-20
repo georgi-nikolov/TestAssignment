@@ -13,15 +13,15 @@ public class OnBackPressedDelegate {
     private int contentId;
     private FragmentManager manager;
 
-    public OnBackPressedDelegate(FragmentManager manager, @IdRes int contentId){
+    public OnBackPressedDelegate(FragmentManager manager, @IdRes int contentId) {
 
         this.contentId = contentId;
         this.manager = manager;
     }
 
-    public boolean onBackPressed(){
+    public boolean onBackPressed() {
 
-        Fragment fragment  = manager.findFragmentById(contentId);
+        Fragment fragment = manager.findFragmentById(contentId);
         return fragment != null &&
                 fragment instanceof OnBackPressedListener &&
                 ((OnBackPressedListener) fragment).onBackPressed();

@@ -12,7 +12,7 @@ import dagger.Component;
  */
 
 @Singleton
-@Component(modules = {AppModule.class, BrowsingModule.class})
+@Component(modules = AppModule.class)
 public interface AppComponent {
 
     void inject(LoginActivity activity);
